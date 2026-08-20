@@ -1,168 +1,232 @@
+<?php
+
+defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title><?= html_escape($title); ?></title>
+    <title>
+        <?= html_escape($title ?? 'Student Portal'); ?>
+    </title>
 
     <style>
 
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
+            margin: 0;
             font-family: Arial, Helvetica, sans-serif;
             background: #eef2ff;
-            color: #1e293b;
-            min-height: 100vh;
+            color: #172554;
         }
 
+        /* NAVIGATION BAR */
+
         .navbar {
+            height: 72px;
             background: #172554;
-            padding: 20px 60px;
+            color: white;
 
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+
+            padding: 0 48px;
         }
 
         .logo {
-            color: white;
-            font-size: 22px;
+            font-size: 21px;
             font-weight: bold;
         }
 
         .nav-links {
             display: flex;
-            gap: 25px;
+            align-items: center;
+            gap: 28px;
         }
 
         .nav-links a {
             color: white;
             text-decoration: none;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .nav-links a:hover {
-            color: #bfdbfe;
+            text-decoration: underline;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1000px;
-            margin: 60px auto;
+        /* MAIN CONTENT */
+
+        .page {
+            min-height: calc(100vh - 72px);
+
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+
+            padding: 50px 20px;
         }
 
-        .welcome-card {
+        .card {
+            width: 100%;
+            max-width: 860px;
+
             background: white;
-            padding: 50px;
-            border-radius: 20px;
+
+            border-radius: 18px;
+
+            padding: 42px;
 
             box-shadow:
-                0 15px 35px rgba(0, 0, 0, 0.08);
-
-            text-align: center;
+                0 12px 30px rgba(0, 0, 0, 0.08);
         }
 
-        .welcome-card h1 {
-            font-size: 40px;
-            margin-bottom: 15px;
+        /* TITLE */
+
+        .title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title h1 {
+            margin: 0;
+
+            font-size: 32px;
+
             color: #172554;
         }
 
-        .welcome-card .subtitle {
+        .title p {
+            margin-top: 12px;
+
             color: #64748b;
-            font-size: 17px;
-            margin-bottom: 35px;
+
+            font-size: 15px;
         }
 
-        .student-card {
+        /* STUDENT DETAILS */
+
+        .student-details {
             background: #f8fafc;
-            padding: 25px;
+
             border-radius: 12px;
-            text-align: left;
+
+            padding: 24px;
         }
 
-        .student-card h2 {
-            color: #2563eb;
+        .student-details h2 {
+            margin-top: 0;
             margin-bottom: 20px;
+
+            color: #2563eb;
+
+            font-size: 22px;
         }
 
-        .student-row {
+        .detail-row {
             display: flex;
+
             justify-content: space-between;
+            align-items: center;
+
             padding: 14px 0;
+
             border-bottom: 1px solid #e2e8f0;
         }
 
-        .student-row:last-child {
+        .detail-row:last-child {
             border-bottom: none;
         }
 
         .label {
             font-weight: bold;
-            color: #475569;
+
+            color: #334155;
         }
 
         .value {
-            color: #1e293b;
+            color: #172554;
+
+            text-align: right;
+        }
+
+        /* BUTTON */
+
+        .button-container {
+            text-align: center;
+
+            margin-top: 25px;
         }
 
         .profile-button {
             display: inline-block;
-            margin-top: 30px;
+
+            padding: 12px 25px;
 
             background: #2563eb;
+
             color: white;
 
             text-decoration: none;
 
-            padding: 14px 25px;
-
-            border-radius: 9px;
+            border-radius: 7px;
 
             font-weight: bold;
+
+            transition: background 0.2s ease;
         }
 
         .profile-button:hover {
             background: #1d4ed8;
         }
 
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #64748b;
+
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+
         @media (max-width: 700px) {
 
             .navbar {
-                padding: 20px;
+                padding: 0 20px;
             }
 
             .nav-links {
-                gap: 10px;
+                gap: 15px;
             }
 
-            .container {
-                width: 95%;
+            .card {
+                padding: 25px;
             }
 
-            .welcome-card {
-                padding: 30px 20px;
-            }
-
-            .welcome-card h1 {
-                font-size: 30px;
-            }
-
-            .student-row {
+            .detail-row {
                 flex-direction: column;
-                gap: 5px;
+
+                align-items: flex-start;
+
+                gap: 6px;
+            }
+
+            .value {
+                text-align: left;
             }
 
         }
@@ -173,137 +237,161 @@
 
 <body>
 
-<nav class="navbar">
+    <!-- NAVIGATION -->
 
-    <div class="logo">
-        Student Portal
-    </div>
+    <nav class="navbar">
 
-    <div class="nav-links">
+        <div class="logo">
+            Student Portal
+        </div>
 
-        <a href="<?= html_escape($studentHomeUrl); ?>">
-            Home
-        </a>
+        <div class="nav-links">
 
-        <a href="<?= html_escape($studentProfileUrl); ?>">
-            Student Profile
-        </a>
+            <a href="/student">
+                Home
+            </a>
 
-    </div>
-
-</nav>
-
-
-<div class="container">
-
-    <div class="welcome-card">
-
-        <h1>
-            Student Information
-        </h1>
-
-        <p class="subtitle">
-            Welcome to my Student Information Page
-        </p>
-
-
-        <div class="student-card">
-
-            <h2>
-                Student Details
-            </h2>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Student ID
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['student_id']); ?>
-                </span>
-
-            </div>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Student Name
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['name']); ?>
-                </span>
-
-            </div>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Course
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['course']); ?>
-                </span>
-
-            </div>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Year Level
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['year']); ?>
-                </span>
-
-            </div>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Section
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['section']); ?>
-                </span>
-
-            </div>
-
-
-            <div class="student-row">
-
-                <span class="label">
-                    Email
-                </span>
-
-                <span class="value">
-                    <?= html_escape($student['email']); ?>
-                </span>
-
-            </div>
+            <a href="/student/profile">
+                Student Profile
+            </a>
 
         </div>
 
+    </nav>
 
-        <a
-            class="profile-button"
-            href="<?= html_escape($studentProfileUrl); ?>"
-        >
-            View Student Profile
-        </a>
 
-    </div>
+    <!-- MAIN CONTENT -->
 
-</div>
+    <main class="page">
+
+        <section class="card">
+
+            <!-- PAGE TITLE -->
+
+            <div class="title">
+
+                <h1>
+                    Student Information
+                </h1>
+
+                <p>
+                    Welcome to my Student Information Page
+                </p>
+
+            </div>
+
+
+            <!-- STUDENT DETAILS -->
+
+            <div class="student-details">
+
+                <h2>
+                    Student Details
+                </h2>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Student ID
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['student_id'] ?? '2024-0001'); ?>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Student Name
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['name'] ?? 'Christann Lloyd P. Altamia'); ?>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Course
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['course'] ?? 'BS Information Technology'); ?>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Year Level
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['year'] ?? '3rd Year'); ?>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Section
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['section'] ?? '3 F-6'); ?>
+                    </span>
+
+                </div>
+
+
+                <div class="detail-row">
+
+                    <span class="label">
+                        Email
+                    </span>
+
+                    <span class="value">
+                        <?= html_escape($student['email'] ?? 'lhoydaltamia@gmail.com'); ?>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- VIEW PROFILE BUTTON -->
+
+            <div class="button-container">
+
+                <a href="/student/profile" class="profile-button">
+                    View Student Profile
+                </a>
+
+            </div>
+
+
+            <!-- FOOTER -->
+
+            <div class="footer">
+
+                LavaLust Laboratory Activity No. 3
+
+            </div>
+
+        </section>
+
+    </main>
 
 </body>
 
