@@ -1,23 +1,11 @@
 <IfModule mod_rewrite.c>
-
     RewriteEngine On
 
-    # Do not rewrite anything already inside public/
-    RewriteRule ^public/ - [L]
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
 
-    # Serve existing files from public/
-    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
-    RewriteRule ^(.+)$ public/$1 [L]
-
-    # Root URL
-    RewriteRule ^$ public/index.php [L]
-
-    # LavaLust application routes
-    RewriteRule ^(.+)$ public/index.php [L,QSA]
-
+    RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
 </IfModule>
 
-# Protect important project files
-<FilesMatch "^(\.env|\.env\..*|Dockerfile|composer\.json|composer\.lock|README\.md|\.gitignore)$">
-    Require all denied
-</FilesMatch>
+DirectoryIndex index.php
