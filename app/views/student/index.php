@@ -5,7 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title><?= html_escape($title); ?></title>
 
@@ -135,13 +138,6 @@
             background: #1d4ed8;
         }
 
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #64748b;
-            font-size: 14px;
-        }
-
         @media (max-width: 700px) {
 
             .navbar {
@@ -175,9 +171,7 @@
 
 </head>
 
-
 <body>
-
 
 <nav class="navbar">
 
@@ -187,11 +181,11 @@
 
     <div class="nav-links">
 
-        <a href="http://localhost/LavaLust-Test/student">
+        <a href="<?= html_escape($studentHomeUrl); ?>">
             Home
         </a>
 
-        <a href="http://localhost/LavaLust-Test/student/profile">
+        <a href="<?= html_escape($studentProfileUrl); ?>">
             Student Profile
         </a>
 
@@ -302,18 +296,14 @@
 
         <a
             class="profile-button"
-            href="/LavaLust-Test/student/profile"
+            href="<?= html_escape($studentProfileUrl); ?>"
         >
             View Student Profile
         </a>
 
-
-        
-
     </div>
 
 </div>
-
 
 </body>
 

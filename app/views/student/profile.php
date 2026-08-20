@@ -5,7 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title><?= html_escape($title); ?></title>
 
@@ -123,6 +126,7 @@
 
         .information-box .value {
             color: #334155;
+            word-break: break-word;
         }
 
         .back-button {
@@ -157,22 +161,6 @@
             text-align: center;
         }
 
-        @media (max-width: 700px) {
-
-            .navbar {
-                padding: 20px;
-            }
-
-            .information {
-                grid-template-columns: 1fr;
-            }
-
-            .profile-card {
-                padding: 30px 20px;
-            }
-
-        }
-
         .profile-description {
             margin-top: 25px;
             padding: 25px;
@@ -192,10 +180,35 @@
             line-height: 1.6;
         }
 
+        .facebook-link {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .facebook-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 20px;
+            }
+
+            .information {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                padding: 30px 20px;
+            }
+
+        }
+
     </style>
 
 </head>
-
 
 <body>
 
@@ -208,11 +221,11 @@
 
     <div class="nav-links">
 
-        <a href="http://localhost/LavaLust-Test/student">
+        <a href="<?= html_escape($studentHomeUrl); ?>">
             Home
         </a>
 
-        <a href="http://localhost/LavaLust-Test/student/profile">
+        <a href="<?= html_escape($studentProfileUrl); ?>">
             Student Profile
         </a>
 
@@ -327,11 +340,11 @@
             <div class="information-box">
 
                 <span class="label">
-                 Address
+                    Address
                 </span>
 
-                 <span class="value">
-                    <?= $student['address']; ?>
+                <span class="value">
+                    <?= html_escape($student['address']); ?>
                 </span>
 
             </div>
@@ -344,7 +357,7 @@
                 </span>
 
                 <span class="value">
-                    <?= $student['contact']; ?>
+                    <?= html_escape($student['contact']); ?>
                 </span>
 
             </div>
@@ -357,7 +370,7 @@
                 </span>
 
                 <span class="value">
-                    <?= $student['skills']; ?>
+                    <?= html_escape($student['skills']); ?>
                 </span>
 
             </div>
@@ -370,7 +383,7 @@
                 </span>
 
                 <span class="value">
-                    <?= $student['hobbies']; ?>
+                    <?= html_escape($student['hobbies']); ?>
                 </span>
 
             </div>
@@ -386,20 +399,29 @@
             </h2>
 
             <p>
-                <?= $student['description']; ?>
+                <?= html_escape($student['description']); ?>
             </p>
 
         </div>
 
 
-            <div class="profile-description">
+        <div class="profile-description">
 
-            <h2>Social Media</h2>
+            <h2>
+                Social Media
+            </h2>
 
             <p>
-                <a href="<?= $student['social_media']['facebook']; ?>" target="_blank">
-                Facebook
+
+                <a
+                    class="facebook-link"
+                    href="<?= html_escape($student['social_media']['facebook']); ?>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Facebook
                 </a>
+
             </p>
 
         </div>
@@ -407,19 +429,20 @@
 
         <div class="protected-message">
 
-            ✓ Lhoydxyz's Student Profile Access Verified
+            ✓ Student Profile Access Verified
 
-        <br>
+            <br>
 
             <small>
                 Authorized through StudentMiddleware.
             </small>
+
         </div>
 
 
         <a
             class="back-button"
-            href="/LavaLust-Test/student"
+            href="<?= html_escape($studentHomeUrl); ?>"
         >
             ← Back to Student Home
         </a>
@@ -428,7 +451,6 @@
     </div>
 
 </div>
-
 
 </body>
 

@@ -8,7 +8,7 @@ class StudentController extends Controller
 {
     private function studentData()
     {
-       return [
+        return [
             'student_id'  => '2024-0001',
             'name'        => 'Christann Lhoyd P. Altamia',
             'course'      => 'BS Information Technology',
@@ -24,34 +24,40 @@ class StudentController extends Controller
             'description' => 'A BS Information Technology student interested in web development, programming, and learning new technologies.',
 
             'social_media' => [
-            'facebook' => 'https://www.facebook.com/clhoyd.altamia/?viewas=100000686899395',
+                'facebook' => 'https://www.facebook.com/clhoyd.altamia/?viewas=100000686899395'
             ]
         ];
     }
-
 
     public function index()
     {
         $data['student'] = $this->studentData();
 
-        $data['title'] = 'Lhoydxyz Panganiban | Student Portal';
+        $data['title'] = 'Christann Lhoyd P. Altamia | Student Portal';
+
+        $data['studentHomeUrl'] = '/student';
+        $data['studentProfileUrl'] = '/student/profile';
 
         $this->call->view('student/index', $data);
     }
 
-
     public function profile()
     {
+      
         $middleware = new StudentMiddleware();
 
         if ($middleware->handle() !== true) {
-        return;
+            return;
         }
 
         $data['student'] = $this->studentData();
 
-        $data['title'] = 'Lhoydxyz Panganiban | Student Profile';
+        $data['title'] = 'Christann Lhoyd P. Altamia | Student Profile';
+
+       
+        $data['studentHomeUrl'] = '/student';
+        $data['studentProfileUrl'] = '/student/profile';
 
         $this->call->view('student/profile', $data);
     }
-}    
+}
