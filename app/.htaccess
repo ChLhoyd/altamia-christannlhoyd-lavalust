@@ -1,11 +1,6 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    RewriteCond %{REQUEST_FILENAME} -f [OR]
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteRule ^ - [L]
-
-    RewriteRule ^(.*)$ index.php?/$1 [L,QSA]
+<IfModule authz_core_module>
+    Require all denied
 </IfModule>
-
-DirectoryIndex index.php
+<IfModule !authz_core_module>
+    Deny from all
+</IfModule>
