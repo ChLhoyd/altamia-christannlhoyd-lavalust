@@ -29,35 +29,34 @@ class StudentController extends Controller
         ];
     }
 
-
     public function index()
     {
         $data['student'] = $this->studentData();
 
-        $data['title'] = 'Lhoydxyz Panganiban | Student Portal';
+        $data['title'] = 'Christann Lhoyd P. Altamia | Student Portal';
+
+        $data['studentHomeUrl'] = '/student';
+        $data['studentProfileUrl'] = '/student/profile';
 
         $this->call->view('student/index', $data);
     }
 
-
     public function profile()
     {
-        
-        if (session_status() !== PHP_SESSION_ACTIVE) {
-            session_start();
-        }
-
-        
+      
         $middleware = new StudentMiddleware();
 
         if ($middleware->handle() !== true) {
             return;
         }
 
-        
         $data['student'] = $this->studentData();
 
-        $data['title'] = 'Lhoydxyz Panganiban | Student Profile';
+        $data['title'] = 'Christann Lhoyd P. Altamia | Student Profile';
+
+       
+        $data['studentHomeUrl'] = '/student';
+        $data['studentProfileUrl'] = '/student/profile';
 
         $this->call->view('student/profile', $data);
     }
