@@ -385,7 +385,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
             <div class="footer">
 
-                LavaLust Laboratory Activity No. 3
+                
 
             </div>
 

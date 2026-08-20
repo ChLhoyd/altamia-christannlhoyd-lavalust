@@ -6,15 +6,22 @@ class StudentMiddleware
 {
     public function handle()
     {
-        // Student access condition
+        
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+
+        
         if (!isset($_SESSION['student_access'])) {
             $_SESSION['student_access'] = true;
         }
 
+        
         if ($_SESSION['student_access'] === true) {
             return true;
         }
 
+        
         return false;
     }
 }
