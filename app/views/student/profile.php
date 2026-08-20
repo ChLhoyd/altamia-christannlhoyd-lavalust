@@ -433,9 +433,7 @@
 
             <br>
 
-            <small>
-                Authorized through StudentMiddleware.
-            </small>
+            
 
         </div>
 
