@@ -92,7 +92,7 @@ $autoload['helpers'] = array('url');
 |
 |	$autoload['models'] = array('model1_model', 'model2_model')
 */
-$autoload['models'] = array();
+$autoload['models'] = array('UsersModel');
 
 /*
 | -------------------------------------------------------------------

@@ -2,4 +2,7 @@
 
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
-$router->get('/', 'UsersController::index');
+class UsersModel extends Model
+{
+    protected $table = 'users';
+}
