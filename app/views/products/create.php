@@ -6,135 +6,157 @@
     <title>Add Product</title>
 
     <style>
-
         body {
             font-family: Arial, sans-serif;
-            background: #111111;
-            padding: 40px;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 30px;
         }
 
         .container {
-            max-width: 600px;
-            margin: auto;
+            max-width: 550px;
+            margin: 30px auto;
             background: white;
-            padding: 30px;
-            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
 
         h1 {
             text-align: center;
+            color: #333;
+            margin-bottom: 25px;
         }
 
         label {
             display: block;
             margin-top: 15px;
-            margin-bottom: 7px;
+            margin-bottom: 6px;
+            color: #333;
             font-weight: bold;
+            font-size: 14px;
         }
 
         input,
         textarea {
             width: 100%;
-            padding: 11px;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 7px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
         }
 
         textarea {
-            min-height: 120px;
+            height: 100px;
             resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #777;
         }
 
         .buttons {
             margin-top: 25px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         button,
         a {
-            padding: 11px 18px;
-            border-radius: 7px;
+            padding: 10px 16px;
+            border-radius: 5px;
             border: none;
             text-decoration: none;
+            font-size: 14px;
             font-weight: bold;
         }
 
         button {
-            background: #2563eb;
+            background: #333;
             color: white;
             cursor: pointer;
         }
 
-        a {
-            background: #6b7280;
-            color: white;
+        button:hover {
+            background: #222;
         }
 
+        a {
+            background: #ddd;
+            color: #333;
+        }
+
+        a:hover {
+            background: #ccc;
+        }
     </style>
 
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <h1>Add Product</h1>
+        <h1>Add Product</h1>
 
-    <form
-        action="<?= site_url('products/create'); ?>"
-        method="POST"
-    >
-
-        <label>Product Name</label>
-
-        <input
-            type="text"
-            name="product_name"
-            required
+        <form
+            action="<?= site_url('products/create'); ?>"
+            method="POST"
         >
 
-        <label>Description</label>
+            <label>Product Name</label>
 
-        <textarea
-            name="description"
-            required
-        ></textarea>
+            <input
+                type="text"
+                name="product_name"
+                required
+            >
 
-        <label>Price</label>
+            <label>Description</label>
 
-        <input
-            type="number"
-            name="price"
-            step="0.01"
-            min="0"
-            required
-        >
+            <textarea
+                name="description"
+                required
+            ></textarea>
 
-        <label>Quantity</label>
+            <label>Price</label>
 
-        <input
-            type="number"
-            name="quantity"
-            min="0"
-            required
-        >
+            <input
+                type="number"
+                name="price"
+                step="0.01"
+                min="0"
+                required
+            >
 
-        <div class="buttons">
+            <label>Quantity</label>
 
-            <button type="submit">
-                Add Product
-            </button>
+            <input
+                type="number"
+                name="quantity"
+                min="0"
+                required
+            >
 
-            <a href="<?= site_url('products'); ?>">
-                Back
-            </a>
+            <div class="buttons">
 
-        </div>
+                <button type="submit">
+                    Add Product
+                </button>
 
-    </form>
+                <a href="<?= site_url('products'); ?>">
+                    Back
+                </a>
 
-</div>
+            </div>
+
+        </form>
+
+    </div>
 
 </body>
 
