@@ -20,4 +20,61 @@ class UsersController extends Controller
             'users' => $users
         ]);
     }
+
+    public function create()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+        {
+
+            $this->call->model('UsersModel');
+
+            $data = 
+            [
+                'firstname' => $_POST['firstname'],
+                'lastname' => $_POST['lastname'],
+                'email' => $_POST['email'],
+                'username' => $_POST['username']
+            ];
+
+            $this->UsersModel->insert($data);
+
+            redirect('/');
+        }
+
+        $this->call->view('CreateUser');
+    }
+    
+    public function edit($id)
+    {
+        $this->call->model('UsersModel');
+
+        $user = $this->UsersModel->find($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+        {
+
+            $data = 
+            [
+                'firstname' => $_POST['firstname'],
+                'lastname' => $_POST['lastname'],
+                'email' => $_POST['email'],
+                'username' => $_POST['username']
+            ];
+
+            $this->UsersModel->update($id, $data);
+
+            redirect('/');
+        }
+
+        $this->call->view('editusers', ['user' => $user]);
+    }
+
+    public function delete($id)
+    {
+        $this->call->model('UsersModel');
+
+        $this->UsersModel->delete($id);
+
+        redirect('/');
+    }
 }
