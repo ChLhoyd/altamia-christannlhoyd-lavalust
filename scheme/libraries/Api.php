@@ -204,7 +204,37 @@ class Api
             show_error('jwt_secret and refresh_token_key must be different values.');
         }
 
-        handle_cors();
+        $this->handle_cors();
+    }
+
+    /**
+     * handle_cors
+     *
+     * @return void
+     */
+    private function handle_cors()
+    {
+        $origin = $this->allow_origin;
+
+        if ($origin === '*') {
+            header('Access-Control-Allow-Origin: *');
+        } elseif (is_array($origin)) {
+            $requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+            if (in_array($requestOrigin, $origin, true)) {
+                header('Access-Control-Allow-Origin: ' . $requestOrigin);
+            }
+        } elseif (is_string($origin) && $origin !== '') {
+            header('Access-Control-Allow-Origin: ' . $origin);
+        }
+
+        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+        if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+            http_response_code(204);
+            exit;
+        }
     }
 
     /**
@@ -428,6 +458,7 @@ class Api
     // --------------------------
     // Auth: JWT
     // --------------------------
+
     /**
      * encode_jwt
      *
@@ -578,6 +609,7 @@ class Api
     // --------------------------
     // Auth: Token System
     // --------------------------
+
     /**
      * issue_tokens
      *
@@ -604,19 +636,31 @@ class Api
         ];
 
         $access_token  = $this->encode_jwt($access_payload);
-        $refresh_token = $this->encode_jwt($refresh_payload); // Raw for client
+        $refresh_token = $this->encode_jwt($refresh_payload);
 
-        // Hash for DB storage (secure + prevents exposure on DB breach)
-        $hashed_refresh = hash_hmac('sha256', (string) $refresh_token, $this->refresh_token_key);
+        // Hash for DB storage
+        $hashed_refresh = hash_hmac(
+            'sha256',
+            (string) $refresh_token,
+            $this->refresh_token_key
+        );
 
         $this->cleanup_expired_refresh_tokens();
 
-        $expires_at = date('Y-m-d H:i:s', $now + $this->refresh_token_expiration);
+        $expires_at = date(
+            'Y-m-d H:i:s',
+            $now + $this->refresh_token_expiration
+        );
 
         $this->_lava->db->raw(
             "INSERT INTO {$this->refresh_token_table} (user_id, token, expires_at, jti) 
              VALUES (?, ?, ?, ?)",
-            [$user_id, $hashed_refresh, $expires_at, $refresh_payload['jti']]
+            [
+                $user_id,
+                $hashed_refresh,
+                $expires_at,
+                $refresh_payload['jti']
+            ]
         );
 
         return [
@@ -636,32 +680,51 @@ class Api
     public function refresh_access_token($refresh_token)
     {
         // Only a token explicitly typed as "refresh" is accepted here.
-        $payload = $this->validate_jwt($refresh_token, 'refresh');
+        $payload = $this->validate_jwt(
+            $refresh_token,
+            'refresh'
+        );
+
         if (!$payload) {
-            $this->respond_error('Invalid refresh token', 403);
+            $this->respond_error(
+                'Invalid refresh token',
+                403
+            );
         }
 
-        $hashed = hash_hmac('sha256', $refresh_token, $this->refresh_token_key);
+        $hashed = hash_hmac(
+            'sha256',
+            $refresh_token,
+            $this->refresh_token_key
+        );
 
         $stmt = $this->_lava->db->raw(
             "SELECT * FROM {$this->refresh_token_table} 
             WHERE token = ? AND expires_at > NOW() LIMIT 1",
             [$hashed]
         );
+
         $found = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$found) {
-            $this->respond_error('Refresh token expired or revoked', 403);
+            $this->respond_error(
+                'Refresh token expired or revoked',
+                403
+            );
         }
 
         $user_stmt = $this->_lava->db->raw(
             "SELECT id, role FROM {$this->users_table} WHERE id = ? LIMIT 1",
             [$payload['sub']]
         );
+
         $user = $user_stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$user) {
-            $this->respond_error('User not found', 403);
+            $this->respond_error(
+                'User not found',
+                403
+            );
         }
 
         $this->revoke_refresh_token($refresh_token);
@@ -686,7 +749,12 @@ class Api
      */
     public function revoke_refresh_token($refresh_token)
     {
-        $hashed = hash_hmac('sha256', $refresh_token, $this->refresh_token_key);
+        $hashed = hash_hmac(
+            'sha256',
+            $refresh_token,
+            $this->refresh_token_key
+        );
+
         $this->_lava->db->raw(
             "DELETE FROM {$this->refresh_token_table} WHERE token = ?",
             [$hashed]
@@ -701,7 +769,9 @@ class Api
      */
     public function cleanup_expired_refresh_tokens($user_id = null): void
     {
-        $sql = "DELETE FROM {$this->refresh_token_table} WHERE expires_at < NOW()";
+        $sql =
+            "DELETE FROM {$this->refresh_token_table} WHERE expires_at < NOW()";
+
         $params = [];
 
         if ($user_id !== null) {
@@ -709,13 +779,17 @@ class Api
             $params[] = $user_id;
         }
 
-        $this->_lava->db->raw($sql, $params);
+        $this->_lava->db->raw(
+            $sql,
+            $params
+        );
     }
 
 
     // --------------------------
     // Basic Auth Support
     // --------------------------
+
     /**
      * check_basic_auth
      *
@@ -727,7 +801,9 @@ class Api
     {
         $user = $_SERVER['PHP_AUTH_USER'] ?? '';
         $pass = $_SERVER['PHP_AUTH_PW'] ?? '';
-        return hash_equals($user, $valid_user) && hash_equals($pass, $valid_pass);
+
+        return hash_equals($user, $valid_user)
+            && hash_equals($pass, $valid_pass);
     }
 
     /**
@@ -741,7 +817,10 @@ class Api
     {
         if (!$this->check_basic_auth($valid_user, $valid_pass)) {
             header('WWW-Authenticate: Basic realm="API"');
-            $this->respond_error('Unauthorized', 401);
+            $this->respond_error(
+                'Unauthorized',
+                401
+            );
         }
     }
 }
