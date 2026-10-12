@@ -1,3 +1,4 @@
+
 <?php
 defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
@@ -35,7 +36,11 @@ class ProductApiController extends Controller
             ->where('username', $username)
             ->get();
 
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (
+            !$user ||
+            !isset($user['password']) ||
+            !password_verify($password, $user['password'])
+        ) {
             $this->api->respond([
                 'message' => 'Invalid username or password.'
             ], 401);
@@ -52,12 +57,10 @@ class ProductApiController extends Controller
         $this->api->respond($tokens);
     }
 
-
     // GET ALL PRODUCTS
     public function index()
     {
         $this->api->require_method('GET');
-
         $this->api->require_jwt();
 
         $products = $this->ProductModel->all();
@@ -67,12 +70,10 @@ class ProductApiController extends Controller
         ]);
     }
 
-
     // GET ONE PRODUCT
     public function show($id)
     {
         $this->api->require_method('GET');
-
         $this->api->require_jwt();
 
         $product = $this->ProductModel->find($id);
@@ -90,12 +91,10 @@ class ProductApiController extends Controller
         ]);
     }
 
-
     // ADD PRODUCT
     public function store()
     {
         $this->api->require_method('POST');
-
         $this->api->require_jwt();
 
         $data = $this->api->body();
@@ -121,7 +120,6 @@ class ProductApiController extends Controller
         ];
 
         $id = $this->ProductModel->insert($productData);
-
         $product = $this->ProductModel->find($id);
 
         $this->api->respond([
@@ -130,10 +128,10 @@ class ProductApiController extends Controller
         ], 201);
     }
 
-
     // UPDATE PRODUCT
     public function update($id)
     {
+        $this->api->require_method('PUT', 'PATCH');
         $this->api->require_jwt();
 
         $product = $this->ProductModel->find($id);
@@ -156,7 +154,6 @@ class ProductApiController extends Controller
         ];
 
         $this->ProductModel->update($id, $productData);
-
         $updatedProduct = $this->ProductModel->find($id);
 
         $this->api->respond([
@@ -165,12 +162,10 @@ class ProductApiController extends Controller
         ]);
     }
 
-
     // DELETE PRODUCT
     public function delete($id)
     {
         $this->api->require_method('DELETE');
-
         $this->api->require_jwt();
 
         $product = $this->ProductModel->find($id);
@@ -190,16 +185,13 @@ class ProductApiController extends Controller
         ]);
     }
 
-
     // LOGOUT
     public function logout()
     {
         $this->api->require_method('POST');
-
         $this->api->require_jwt();
 
         $data = $this->api->body();
-
         $refreshToken = $data['refresh_token'] ?? '';
 
         if ($refreshToken !== '') {
@@ -211,14 +203,12 @@ class ProductApiController extends Controller
         ]);
     }
 
-
     // REFRESH TOKEN
     public function refresh()
     {
         $this->api->require_method('POST');
 
         $data = $this->api->body();
-
         $refreshToken = $data['refresh_token'] ?? '';
 
         if ($refreshToken === '') {
