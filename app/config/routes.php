@@ -12,25 +12,50 @@ $router->get('/products/delete/{id}','ProductController::delete')->where_number(
 
 // LAB 6 API ROUTES
 
-$router->post('/api/login', 'ProductApiController::login');
+$router->match(
+    '/api/login',
+    'ProductApiController::login',
+    ['POST', 'OPTIONS']
+);
 
-$router->post('/api/logout', 'ProductApiController::logout');
+$router->match(
+    '/api/logout',
+    'ProductApiController::logout',
+    ['POST', 'OPTIONS']
+);
 
-$router->get('/api/products', 'ProductApiController::index');
+$router->match(
+    '/api/products',
+    'ProductApiController::index',
+    ['GET', 'OPTIONS']
+);
 
-$router->get('/api/products/{id}', 'ProductApiController::show');
+$router->match(
+    '/api/products',
+    'ProductApiController::store',
+    ['POST', 'OPTIONS']
+);
 
-$router->post('/api/products', 'ProductApiController::store');
+$router->match(
+    '/api/products/{id}',
+    'ProductApiController::show',
+    ['GET', 'OPTIONS']
+)->where_number('id');
 
 $router->match(
     '/api/products/{id}',
     'ProductApiController::update',
-    ['PUT', 'PATCH']
-);
+    ['PUT', 'PATCH', 'OPTIONS']
+)->where_number('id');
 
-$router->delete(
+$router->match(
     '/api/products/{id}',
-    'ProductApiController::delete'
-);
+    'ProductApiController::delete',
+    ['DELETE', 'OPTIONS']
+)->where_number('id');
 
-$router->post('/api/refresh', 'ProductApiController::refresh');
+$router->match(
+    '/api/refresh',
+    'ProductApiController::refresh',
+    ['POST', 'OPTIONS']
+);
