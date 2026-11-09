@@ -78,6 +78,33 @@ define('SYSTEM_DIR', ROOT_DIR . $system_path . DIRECTORY_SEPARATOR);
 define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 define('PUBLIC_DIR', $public_folder);
 
+
+/*
+|--------------------------------------------------------------------------
+| CORS PREFLIGHT HANDLER
+|--------------------------------------------------------------------------
+| Allow the deployed React frontend to send API requests.
+*/
+
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
+
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+
+    if ($origin === 'https://lavalust-react.onrender.com') {
+
+        header('Access-Control-Allow-Origin: ' . $origin);
+        header('Vary: Origin');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
+        header('Access-Control-Allow-Headers: Content-Type, Authorization');
+        header('Access-Control-Max-Age: 86400');
+
+    }
+
+    http_response_code(204);
+    exit;
+}
+
+
 /*
  * ------------------------------------------------------
  * Setup done? Then Hurray!

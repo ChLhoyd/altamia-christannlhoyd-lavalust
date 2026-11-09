@@ -1,4 +1,3 @@
-
 <?php
 $studentName = $name ?? 'Student';
 $attendanceRecords = is_array($attendance ?? null) ? $attendance : [];
