@@ -83,8 +83,8 @@ class Auth extends Controller
             return;
         }
 
-        // Admin uses the React portal.
-        redirect(site_url('/'));
+        // Admin uses the React portal. 
+        redirect('https://lavalust-react.onrender.com/');
     }
 
     public function logout()
