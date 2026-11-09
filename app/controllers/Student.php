@@ -1,4 +1,3 @@
-```php
 <?php
 
 class Student extends Controller
