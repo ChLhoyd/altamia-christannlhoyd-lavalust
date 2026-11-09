@@ -1,0 +1,10 @@
+.git
+.gitignore
+.env
+.vscode
+.idea
+runtime/cache/*
+runtime/session/*
+generate_hash.php
+*.sql
+*.log

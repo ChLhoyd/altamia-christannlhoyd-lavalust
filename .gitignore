@@ -24,3 +24,7 @@ runtime/*
 
 # OS
 Thumbs.db
+# Utility script with sample passwords - never publish
+generate_hash.php
+# Database dumps contain real user data
+*.sql

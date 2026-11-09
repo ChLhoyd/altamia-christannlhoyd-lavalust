@@ -5,6 +5,9 @@ FROM php:${PHP_VERSION}-apache
 # Install PDO MySQL
 RUN docker-php-ext-install pdo pdo_mysql
 
+# PHP time zone (the app also sets Asia/Manila explicitly)
+RUN echo "date.timezone=Asia/Manila" > /usr/local/etc/php/conf.d/timezone.ini
+
 # Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
